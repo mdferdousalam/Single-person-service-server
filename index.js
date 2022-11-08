@@ -38,6 +38,7 @@ function verifyJWT(req, res, next) {
 async function run() {
     try {
         const userCollection = client.db('assignment11').collection('users');
+        const servicesCollection = client.db('assignment11').collection('services');
 
         // users finding api
         app.get('/users', async (req, res) => {
@@ -56,6 +57,24 @@ async function run() {
             res.send(result)
 
         })
+
+        // services adding api
+        app.post('/services', async (req, res) => {
+            const service = req.body
+            console.log(service);
+            const result = await servicesCollection.insertOne(service)
+            res.send(result)
+
+        })
+
+        // services finding api
+        app.get('/services', async (req, res) => {
+            const query = {}
+            const cursor = servicesCollection.find(query)
+            const services = await cursor.toArray()
+            res.send(services)
+        })
+
 
     } catch (error) {
 
