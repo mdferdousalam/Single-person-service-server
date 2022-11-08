@@ -37,6 +37,15 @@ function verifyJWT(req, res, next) {
 
 async function run() {
     try {
+        const userCollection = client.db('assignment11').collection('users');
+
+        app.post('/users', async (req, res) => {
+            const user = req.body
+            console.log(user);
+            const result = await userCollection.insertOne(user)
+            res.send(result)
+
+        })
 
     } catch (error) {
 
