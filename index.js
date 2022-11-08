@@ -39,6 +39,16 @@ async function run() {
     try {
         const userCollection = client.db('assignment11').collection('users');
 
+        // users finding api
+        app.get('/users', async (req, res) => {
+            const query = {}
+            const cursor = userCollection.find(query)
+            const users = await cursor.toArray()
+            res.send(users)
+        })
+
+
+        // user creating api 
         app.post('/users', async (req, res) => {
             const user = req.body
             console.log(user);
