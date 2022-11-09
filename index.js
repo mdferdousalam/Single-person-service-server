@@ -40,6 +40,7 @@ async function run() {
         const userCollection = client.db('assignment11').collection('users');
         const servicesCollection = client.db('assignment11').collection('services');
         const quotationCollection = client.db('assignment11').collection('quotation');
+        const reviewsCollection = client.db('assignment11').collection('reviews');
 
         // users finding api
         app.get('/users', async (req, res) => {
@@ -64,6 +65,24 @@ async function run() {
             const result = await quotationCollection.insertOne(quotation)
             res.send(result)
         })
+
+
+        // review add API
+        app.post('/addreview', async (req, res) => {
+            const review = req.body
+            const result = await reviewsCollection.insertOne(review)
+            res.send(result)
+        })
+
+        // all reviews get API
+        app.get('/reviews/:id', async (req, res) => {
+
+            const query = {}
+            const cursor = reviewsCollection.find(query)
+            const reviews = await cursor.toArray()
+            res.send(reviews)
+        })
+
 
         // services adding API
         app.post('/services', async (req, res) => {
