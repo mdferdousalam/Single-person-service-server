@@ -39,6 +39,7 @@ async function run() {
     try {
         const userCollection = client.db('assignment11').collection('users');
         const servicesCollection = client.db('assignment11').collection('services');
+        const quotationCollection = client.db('assignment11').collection('quotation');
 
         // users finding api
         app.get('/users', async (req, res) => {
@@ -52,10 +53,16 @@ async function run() {
         // user creating API
         app.post('/users', async (req, res) => {
             const user = req.body
-            console.log(user);
             const result = await userCollection.insertOne(user)
             res.send(result)
 
+        })
+
+        // quotation API
+        app.post('/quotations', async (req, res) => {
+            const quotation = req.body
+            const result = await quotationCollection.insertOne(quotation)
+            res.send(result)
         })
 
         // services adding API
@@ -72,6 +79,15 @@ async function run() {
             const query = {}
             const cursor = servicesCollection.find(query)
             const services = await cursor.toArray()
+            res.send(services)
+        })
+
+
+        // Limit services finding API 
+        app.get('/serviceslimit', async (req, res) => {
+            const query = {}
+            const cursor = servicesCollection.find(query)
+            const services = await cursor.limit(3).toArray()
             res.send(services)
         })
 
