@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
@@ -49,7 +49,7 @@ async function run() {
         })
 
 
-        // user creating api 
+        // user creating API
         app.post('/users', async (req, res) => {
             const user = req.body
             console.log(user);
@@ -58,7 +58,7 @@ async function run() {
 
         })
 
-        // services adding api
+        // services adding API
         app.post('/services', async (req, res) => {
             const service = req.body
             console.log(service);
@@ -67,12 +67,20 @@ async function run() {
 
         })
 
-        // services finding api
+        // services finding API
         app.get('/services', async (req, res) => {
             const query = {}
             const cursor = servicesCollection.find(query)
             const services = await cursor.toArray()
             res.send(services)
+        })
+
+        // single service finding API
+        app.get('/services/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) }
+            const result = await servicesCollection.findOne(query)
+            res.send(result)
         })
 
 
