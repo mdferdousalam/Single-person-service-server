@@ -50,6 +50,14 @@ async function run() {
             res.send(users)
         })
 
+        // singel User finding by email API
+        app.get('/user', async (req, res) => {
+            const email = req.query.email
+            const query = { email: email }
+            const cursor = userCollection.findOne(query)
+            const user = await cursor.toArray;
+            res.send(user)
+        })
 
         // user creating API
         app.post('/users', async (req, res) => {
