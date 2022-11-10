@@ -74,10 +74,28 @@ async function run() {
             res.send(result)
         })
 
-        // all reviews get API
-        app.get('/reviews/:id', async (req, res) => {
-
+        // all reviews getting  API
+        app.get('/reviews', async (req, res) => {
             const query = {}
+            const cursor = reviewsCollection.find(query)
+            const reviews = await cursor.toArray()
+            res.send(reviews)
+        })
+        // Single service review finding API
+        app.get('/reviews/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { serviceId: id }
+            const cursor = reviewsCollection.find(query)
+            const reviews = await cursor.toArray()
+            res.send(reviews)
+        })
+
+
+        // my review getting API
+        app.get('/myreviews', async (req, res) => {
+            const email = req.query.email;
+            console.log(email)
+            const query = { email: email }
             const cursor = reviewsCollection.find(query)
             const reviews = await cursor.toArray()
             res.send(reviews)
